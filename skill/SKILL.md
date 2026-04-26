@@ -57,7 +57,7 @@ Do not retry on restricted-page errors — they need human action.
 If `which ctab` returns nothing, the user hasn't installed the CLI yet. Easiest path:
 
 ```sh
-bunx ctab setup            # installs the extension files to ~/.ctab/extension/
+bunx @httpete/ctab setup            # installs the extension files to ~/.ctab/extension/
 ```
 
 Then in Chrome:

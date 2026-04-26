@@ -9,7 +9,7 @@ See `DECISIONS.md` for the architecture rationale and rejected alternatives.
 Requires [Bun](https://bun.sh) 1.3+ and macOS.
 
 ```sh
-bunx ctab setup       # installs the extension files to ~/.ctab/extension/
+bunx @httpete/ctab setup       # installs the extension files to ~/.ctab/extension/
 ```
 
 Then in Chrome:
@@ -21,8 +21,8 @@ Then in Chrome:
 That's it. Now run:
 
 ```sh
-bunx ctab screenshot              # writes /tmp/ctab-<ms>.png, prints path
-bunx ctab screenshot ./shot.png   # writes to ./shot.png
+bunx @httpete/ctab screenshot              # writes /tmp/ctab-<ms>.png, prints path
+bunx @httpete/ctab screenshot ./shot.png   # writes to ./shot.png
 ```
 
 For a shorter `ctab` invocation, see "Local install" below.

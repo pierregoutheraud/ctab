@@ -1,6 +1,9 @@
 {
-  "name": "ctab",
+  "name": "@httpete/ctab",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Capture the active tab in your everyday Chrome (real logins, real profiles) from a CLI. Built for feeding LLM coding agents a snapshot of what you're looking at. Pairs a Bun CLI with a small Chrome extension.",
   "type": "module",
   "license": "MIT",
