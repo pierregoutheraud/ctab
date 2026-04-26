@@ -65,6 +65,14 @@ bun run install:skill
 
 Symlinks `skill/` to `~/.claude/skills/ctab/`. After restarting Claude Code, prompts like *"look at my current tab"* or *"what am I seeing right now?"* will auto-trigger `ctab screenshot` and read the resulting PNG — no need to mention `ctab` by name. To remove: `bun run uninstall:skill`.
 
+### 4. Install the `/ctab` slash command (optional)
+
+```sh
+bun run install:command
+```
+
+Symlinks `commands/ctab.md` to `~/.claude/commands/ctab.md`. After restarting Claude Code, you can type `/ctab why is this button misaligned?` and Claude will capture the active tab and answer in one turn — handy when you want to *explicitly* attach your current tab to a prompt. Pairs well with the skill: skill for ambient ("look at my tab"), command for explicit (`/ctab does this match the design?`). To remove: `bun run uninstall:command`.
+
 ## Usage
 
 ```sh

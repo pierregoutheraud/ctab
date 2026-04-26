@@ -38,6 +38,7 @@
     "shared/",
     "extension/dist/",
     "skill/",
+    "commands/",
     "README.md",
     "DECISIONS.md"
   ],
@@ -48,6 +49,8 @@
     "uninstall:cli": "rm -f ~/.bun/bin/ctab && echo 'Removed: ~/.bun/bin/ctab'",
     "install:skill": "mkdir -p ~/.claude/skills && ln -sfn \"$PWD/skill\" ~/.claude/skills/ctab && echo 'Linked: ~/.claude/skills/ctab'",
     "uninstall:skill": "rm -f ~/.claude/skills/ctab && echo 'Removed: ~/.claude/skills/ctab'",
+    "install:command": "mkdir -p ~/.claude/commands && ln -sfn \"$PWD/commands/ctab.md\" ~/.claude/commands/ctab.md && echo 'Linked: ~/.claude/commands/ctab.md'",
+    "uninstall:command": "rm -f ~/.claude/commands/ctab.md && echo 'Removed: ~/.claude/commands/ctab.md'",
     "cli": "bun cli/index.ts",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "bun run typecheck && bun run build:ext"
