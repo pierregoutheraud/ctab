@@ -1,0 +1,22 @@
+{
+  "name": "tabli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "tabli": "cli/index.ts"
+  },
+  "scripts": {
+    "build:ext": "bun extension/build.ts",
+    "build:cli": "bun build cli/index.ts --compile --outfile tabli",
+    "install:cli": "bun run build:cli && mv tabli ~/.bun/bin/tabli && echo 'Installed: ~/.bun/bin/tabli'",
+    "uninstall:cli": "rm -f ~/.bun/bin/tabli && echo 'Removed: ~/.bun/bin/tabli'",
+    "cli": "bun cli/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/chrome": "latest",
+    "typescript": "^5.6.0"
+  }
+}
