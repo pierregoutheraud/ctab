@@ -1,50 +1,77 @@
-# tabli
+# ctab
 
 A Bun CLI + Chrome extension that captures the **active tab in your everyday Chrome** (real logins, real profiles — not headless, not CDP) and writes a PNG to disk. Built for feeding LLM coding agents a snapshot of what you're looking at.
 
 See `DECISIONS.md` for the architecture rationale and rejected alternatives.
 
-## Install (one-time)
+## Quick start (no clone, via bunx)
 
 Requires [Bun](https://bun.sh) 1.3+ and macOS.
 
-### 1. Build and load the extension
-
 ```sh
-bun install
-bun run build:ext
+bunx ctab setup       # installs the extension files to ~/.ctab/extension/
 ```
 
 Then in Chrome:
 
 1. Open `chrome://extensions`.
 2. Toggle **Developer mode** (top right).
-3. Click **Load unpacked**.
-4. Select `extension/dist/` from this repo.
+3. Click **Load unpacked** and select `~/.ctab/extension/`.
 
-The extension runs in the background — no popup, no UI. It silently maintains a localhost connection waiting for the CLI.
+That's it. Now run:
 
-### 2. Get the `tabli` command on your `$PATH`
+```sh
+bunx ctab screenshot              # writes /tmp/ctab-<ms>.png, prints path
+bunx ctab screenshot ./shot.png   # writes to ./shot.png
+```
+
+For a shorter `ctab` invocation, see "Local install" below.
+
+## Local install (CLI on `$PATH`, plus optional Claude Code skill)
+
+```sh
+git clone https://github.com/pierregoutheraud/tabli && cd tabli
+bun install
+```
+
+### 1. Build and load the extension
+
+```sh
+bun run build:ext
+```
+
+In Chrome → `chrome://extensions` → Developer mode → Load unpacked → select `extension/dist/`.
+
+### 2. Get the `ctab` command on your `$PATH`
 
 ```sh
 bun run install:cli
 ```
 
-This builds a ~60MB self-contained binary and drops it in `~/.bun/bin/tabli` (which Bun's installer already adds to your `$PATH`). No Bun needed at runtime after that. Re-run after code changes. To remove: `bun run uninstall:cli`.
+This builds a ~60MB self-contained binary and drops it in `~/.bun/bin/ctab` (which Bun's installer already adds to your `$PATH`). No Bun needed at runtime after that. Re-run after code changes. To remove: `bun run uninstall:cli`.
 
 If you'd rather symlink the source (skip the rebuild step on every change):
 
 ```sh
 chmod +x cli/index.ts
-ln -s "$PWD/cli/index.ts" ~/.bun/bin/tabli
+ln -s "$PWD/cli/index.ts" ~/.bun/bin/ctab
 ```
+
+### 3. Install the Claude Code skill (optional)
+
+```sh
+bun run install:skill
+```
+
+Symlinks `skill/` to `~/.claude/skills/ctab/`. After restarting Claude Code, prompts like *"look at my current tab"* or *"what am I seeing right now?"* will auto-trigger `ctab screenshot` and read the resulting PNG — no need to mention `ctab` by name. To remove: `bun run uninstall:skill`.
 
 ## Usage
 
 ```sh
-tabli screenshot                  # writes /tmp/tabli-<ms>.png, prints path
-tabli screenshot ./shot.png       # writes to ./shot.png
-tabli help                        # show usage
+ctab screenshot                  # writes /tmp/ctab-<ms>.png, prints path
+ctab screenshot ./shot.png       # writes to ./shot.png
+ctab setup                       # install/refresh the bundled extension files
+ctab help                        # show usage
 ```
 
 Stdout: absolute path of the written PNG, single line. Errors go to stderr; exit 1 on failure.
@@ -52,18 +79,18 @@ Stdout: absolute path of the written PNG, single line. Errors go to stderr; exit
 Capture-and-open in one shot:
 
 ```fish
-open (tabli screenshot)             # fish
+open (ctab screenshot)             # fish
 ```
 ```bash
-open "$(tabli screenshot)"          # bash/zsh
+open "$(ctab screenshot)"          # bash/zsh
 ```
 
 ## Options
 
 | | |
 |---|---|
-| Positional arg to `screenshot` | output path (default: `/tmp/tabli-<unix-ms>.png`) |
-| `TABLI_PORT` | override the localhost port (default: `47821`) |
+| Positional arg to `screenshot` | output path (default: `/tmp/ctab-<unix-ms>.png`) |
+| `CTAB_PORT` | override the localhost port (default: `47821`) |
 
 ## Limitations
 
@@ -74,8 +101,8 @@ open "$(tabli screenshot)"          # bash/zsh
 
 ## Troubleshooting
 
-**`No Chrome extension responded within 5s`** — Chrome isn't running, or the extension isn't loaded. Check `chrome://extensions`.
+**`No Chrome extension responded within 5s`** — Chrome isn't running, or the extension isn't loaded. Run `ctab setup` and load `~/.ctab/extension/` in `chrome://extensions`.
 
 **`Cannot capture restricted page`** — switch to a normal `https://` tab.
 
-**`Port 47821 is in use`** — another `tabli screenshot` is mid-flight, or the port is taken. Wait a moment, or set `TABLI_PORT`.
+**`Port 47821 is in use`** — another `ctab screenshot` is mid-flight, or the port is taken. Wait a moment, or set `CTAB_PORT`.

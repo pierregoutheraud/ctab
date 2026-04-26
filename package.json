@@ -1,18 +1,53 @@
 {
-  "name": "tabli",
+  "name": "ctab",
   "version": "0.1.0",
-  "private": true,
+  "description": "Capture the active tab in your everyday Chrome (real logins, real profiles) from a CLI. Built for feeding LLM coding agents a snapshot of what you're looking at. Pairs a Bun CLI with a small Chrome extension.",
   "type": "module",
-  "bin": {
-    "tabli": "cli/index.ts"
+  "license": "MIT",
+  "author": "Pierre Goutheraud",
+  "homepage": "https://github.com/pierregoutheraud/tabli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pierregoutheraud/tabli.git"
   },
+  "bugs": {
+    "url": "https://github.com/pierregoutheraud/tabli/issues"
+  },
+  "keywords": [
+    "chrome",
+    "screenshot",
+    "tab",
+    "cli",
+    "browser",
+    "bun",
+    "agents",
+    "claude",
+    "llm"
+  ],
+  "engines": {
+    "bun": ">=1.3.0"
+  },
+  "bin": {
+    "ctab": "cli/index.ts"
+  },
+  "files": [
+    "cli/",
+    "shared/",
+    "extension/dist/",
+    "skill/",
+    "README.md",
+    "DECISIONS.md"
+  ],
   "scripts": {
     "build:ext": "bun extension/build.ts",
-    "build:cli": "bun build cli/index.ts --compile --outfile tabli",
-    "install:cli": "bun run build:cli && mv tabli ~/.bun/bin/tabli && echo 'Installed: ~/.bun/bin/tabli'",
-    "uninstall:cli": "rm -f ~/.bun/bin/tabli && echo 'Removed: ~/.bun/bin/tabli'",
+    "build:cli": "bun build cli/index.ts --compile --outfile ctab",
+    "install:cli": "bun run build:cli && mv ctab ~/.bun/bin/ctab && echo 'Installed: ~/.bun/bin/ctab'",
+    "uninstall:cli": "rm -f ~/.bun/bin/ctab && echo 'Removed: ~/.bun/bin/ctab'",
+    "install:skill": "mkdir -p ~/.claude/skills && ln -sfn \"$PWD/skill\" ~/.claude/skills/ctab && echo 'Linked: ~/.claude/skills/ctab'",
+    "uninstall:skill": "rm -f ~/.claude/skills/ctab && echo 'Removed: ~/.claude/skills/ctab'",
     "cli": "bun cli/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "bun run typecheck && bun run build:ext"
   },
   "devDependencies": {
     "@types/bun": "latest",

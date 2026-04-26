@@ -3,7 +3,7 @@
 
 import { DEFAULT_PORT } from "../shared/protocol";
 
-const port = Number(process.env["TABLI_PORT"]) || DEFAULT_PORT;
+const port = Number(process.env["CTAB_PORT"]) || DEFAULT_PORT;
 const lastFocusedAt = Number(process.env["FAKE_LAST_FOCUSED_AT"]) || Date.now();
 const currentlyFocused = process.env["FAKE_CURRENTLY_FOCUSED"] !== "false";
 const mode = process.env["FAKE_MODE"] || "ok";

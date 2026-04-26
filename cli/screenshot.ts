@@ -10,16 +10,16 @@ import type { ExtToCli, Hello } from "../shared/protocol";
 type ClientData = { hello: Hello | null };
 
 export async function runScreenshot(outputArg: string | undefined): Promise<never> {
-  const portEnv = process.env["TABLI_PORT"];
+  const portEnv = process.env["CTAB_PORT"];
   const port = portEnv ? Number(portEnv) : DEFAULT_PORT;
   if (!Number.isFinite(port) || port <= 0 || port > 65535) {
-    console.error(`Invalid TABLI_PORT: ${portEnv}`);
+    console.error(`Invalid CTAB_PORT: ${portEnv}`);
     process.exit(1);
   }
 
   const outputPath = outputArg
     ? resolvePath(outputArg)
-    : `/tmp/tabli-${Date.now()}.png`;
+    : `/tmp/ctab-${Date.now()}.png`;
 
   let done = false;
   let chosen: ServerWebSocket<ClientData> | null = null;
@@ -123,8 +123,8 @@ export async function runScreenshot(outputArg: string | undefined): Promise<neve
   timeoutTimer = setTimeout(() => {
     exitErr(
       "No Chrome extension responded within 5s.\n" +
-        "Make sure Chrome is running and the tabli bridge extension is loaded.\n" +
-        "See README.md for install instructions.",
+        "Make sure Chrome is running and the ctab bridge extension is loaded.\n" +
+        "Run `ctab setup` to install the extension, then load it in chrome://extensions.",
     );
   }, CONNECTION_TIMEOUT_MS);
 
@@ -189,9 +189,9 @@ export async function runScreenshot(outputArg: string | undefined): Promise<neve
       (lower.includes("port") && lower.includes("in use"));
     if (portInUse) {
       console.error(
-        `Port ${port} is in use. Another tabli screenshot may be in flight, ` +
+        `Port ${port} is in use. Another ctab screenshot may be in flight, ` +
           `or another process owns the port.\n` +
-          `Override with: TABLI_PORT=<port> tabli screenshot`,
+          `Override with: CTAB_PORT=<port> ctab screenshot`,
       );
       process.exit(1);
     }

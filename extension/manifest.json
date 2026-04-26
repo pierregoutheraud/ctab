@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "tabli bridge",
+  "name": "ctab bridge",
   "version": "0.1.0",
-  "description": "Bridges chrome.tabs.captureVisibleTab() to the tabli CLI so LLM agents can see your active tab.",
+  "description": "Bridges chrome.tabs.captureVisibleTab() to the ctab CLI so LLM agents can see your active tab.",
   "permissions": ["tabs", "offscreen", "storage"],
   "host_permissions": ["<all_urls>"],
   "background": {

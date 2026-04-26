@@ -21,12 +21,12 @@ This document records the architectural decisions made before implementation and
 
 ### 2. CLI lifecycle: one-shot, not daemon
 
-**Decision.** Each `tabli screenshot` invocation spins up the WS server, gets one capture, exits.
+**Decision.** Each `ctab screenshot` invocation spins up the WS server, gets one capture, exits.
 
 **Why.** No "is the daemon running?" failure mode. The extension is doing the "stay reachable" work anyway (see decision 3), so a daemon adds nothing for the LLM-agent-occasional-capture use case. Stateless and easier to reason about.
 
 **Alternative rejected.**
-- *Persistent daemon (`tabli start` / `tabli capture`).* Faster on successive captures but creates a setup cliff (forgot to start the daemon → confusing failure). Worth revisiting only if real workloads need bursts of captures per second.
+- *Persistent daemon (`ctab start` / `ctab capture`).* Faster on successive captures but creates a setup cliff (forgot to start the daemon → confusing failure). Worth revisiting only if real workloads need bursts of captures per second.
 
 ### 3. Extension liveness: offscreen document with persistent retry loop
 
@@ -59,15 +59,15 @@ This document records the architectural decisions made before implementation and
 
 **Cost:** ~50–100ms added latency in the worst case (when nothing in Chrome currently has focus, e.g. when running the CLI from a terminal that's frontmost). Negligible compared to the ~100–300ms `captureVisibleTab` itself.
 
-### 6. Output: `/tmp/tabli-<ms>.png`, path on stdout
+### 6. Output: `/tmp/ctab-<ms>.png`, path on stdout
 
-**Decision.** Default file location `/tmp/tabli-<unix-ms>.png`. Absolute path on stdout (single line, nothing else). Errors and status on stderr. Optional positional arg overrides the default path. Exit `0`/`1`.
+**Decision.** Default file location `/tmp/ctab-<unix-ms>.png`. Absolute path on stdout (single line, nothing else). Errors and status on stderr. Optional positional arg overrides the default path. Exit `0`/`1`.
 
-**Why.** macOS auto-cleans `/tmp` after 3 days of disuse → no clutter. Single-line stdout means `tabli screenshot | xargs cat` works. Quiet by default → script-friendly.
+**Why.** macOS auto-cleans `/tmp` after 3 days of disuse → no clutter. Single-line stdout means `ctab screenshot | xargs cat` works. Quiet by default → script-friendly.
 
 **Alternatives rejected.**
 - *Default to current directory.* Clutters wherever the agent invokes from.
-- *`~/Pictures/tabli/`.* Discoverable but never auto-cleans; would pile up.
+- *`~/Pictures/ctab/`.* Discoverable but never auto-cleans; would pile up.
 - *Print base64 to stdout instead of a path.* Noisy in agent logs; PNGs are large; harder to compose with other tools.
 
 ### 7. Auth: bind to 127.0.0.1 + reject non-extension Origins
@@ -90,10 +90,10 @@ These are intentional non-goals for v1 but worth revisiting when needed:
 
 ### Distribution / install UX
 - **Chrome Web Store listing.** Currently the extension installs as unpacked (developer mode). Web Store listing makes onboarding one click but adds Google review latency. Worth it only if anyone other than the author uses this.
-- **Homebrew formula.** `brew install tabli` instead of `bun install` + symlink.
+- **Homebrew formula.** `brew install ctab` instead of `bun install` + symlink.
 - **Single-binary build via `bun build --compile`.** Wired up via `bun run install:cli`; produces a self-contained executable. No Bun runtime install needed at runtime.
-- **`tabli doctor` subcommand.** Diagnose: extension installed? at least one Chrome window open? port free? Print actionable output.
-- **`tabli install-extension` subcommand.** Print the chrome://extensions install steps with the right path filled in.
+- **`ctab doctor` subcommand.** Diagnose: extension installed? at least one Chrome window open? port free? Print actionable output.
+- **`ctab install-extension` subcommand.** Print the chrome://extensions install steps with the right path filled in.
 
 ### Security
 - **Pin extension ID via `manifest.json` `"key"`.** Tighten the Origin check from "any chrome-extension" to one specific ID. Stops other installed extensions from racing for connections.

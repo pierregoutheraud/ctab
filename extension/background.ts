@@ -19,11 +19,11 @@ async function ensureOffscreen(): Promise<void> {
     await chrome.offscreen.createDocument({
       url: "offscreen.html",
       reasons: [chrome.offscreen.Reason.BLOBS],
-      justification: "Maintain a persistent localhost WebSocket connection to the tabli CLI.",
+      justification: "Maintain a persistent localhost WebSocket connection to the ctab CLI.",
     });
   } catch (e) {
     if (!String(e).includes("Only a single offscreen document")) {
-      console.warn("[tabli] ensureOffscreen failed:", e);
+      console.warn("[ctab] ensureOffscreen failed:", e);
     }
   }
 }

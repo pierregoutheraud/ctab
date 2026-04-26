@@ -1,17 +1,19 @@
 #!/usr/bin/env bun
 import { runScreenshot } from "./screenshot";
+import { runSetup } from "./setup";
 
 function printUsage(): void {
-  process.stdout.write(`tabli — interact with your active Chrome tab.
+  process.stdout.write(`ctab — interact with your active Chrome tab.
 
 Usage:
-  tabli screenshot [output-path]    Capture the active tab to a PNG.
-  tabli help                        Show this message.
+  ctab screenshot [output-path]    Capture the active tab to a PNG.
+  ctab setup                       Install the companion Chrome extension.
+  ctab help                        Show this message.
 
-Output path defaults to /tmp/tabli-<unix-ms>.png.
+Output path defaults to /tmp/ctab-<unix-ms>.png.
 
 Environment:
-  TABLI_PORT   Override localhost port (default: 47821)
+  CTAB_PORT   Override localhost port (default: 47821)
 `);
 }
 
@@ -21,6 +23,9 @@ const arg = process.argv[3];
 switch (sub) {
   case "screenshot":
     await runScreenshot(arg);
+    break;
+  case "setup":
+    await runSetup();
     break;
   case undefined:
   case "help":
